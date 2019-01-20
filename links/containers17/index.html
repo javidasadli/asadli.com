@@ -1,0 +1,251 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+ 
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+        [GDD] DNS
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            09 December 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+
+      <div id="x_text-31" class="x_editableElement" style="font-size: 16px;">
+          <div class="x_ce">We left off with our Node application running in production!
+          <div>
+          <div>&nbsp;</div>
+          <div>🎉</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>We would like to serve this at our own domains though, of course.&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Also, if you happened to try accessing the site over HTTPS, that did not work either.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>In today&rsquo;s lesson, the second to last lesson of GDD, we will update our DNS records, as well as enable HTTPS traffic.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>The DNS portion is very easy:</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Create a CNAME for every subdomain and root url you want to serve, and point it to the load balancer url of your cluster.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>I&rsquo;m going to deploy mine to a subdomain -<a id="x_link-2502-127" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLkNmJl5wAopnKNDAa2DCAk11TZju90X9BN7rd-2B8c-2F6R3AiqpPQE-2F-2BCYorosnwjjn2Cq3N4jBUMKGic8MEfqihiZWsYPCjXFXzAJNIyXkGHhzAPvkupoznNWxCGL-2FX5lqIEkKh2wAeK1iSKIVUyBttuJSpeijksA-2FE1NT-2F7-2FBEgvVNHlQfGySXxm1HJ8OkpBIUAts4CIiFqwW-2FXB1AaO7KOWOQcmoTKAuBY2hbKEU9HcVkB4XmD4LRObZUux7P3p-2BNzujwZfsHG-2FRKnMQrzhFgZghe4kELDnBV8TlaZwgkMi8-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAEzpyRwIj3BYP9a6B6-2BSo6P5Ier8DXtZcIuDBrHb1ksIkmVNoctTJNjKeHw-2FsbSkWk6Vpy9vHnzQYDho8PODqrtJKca9sEPOSkibnfTXWL7zbzRglLycGyIhTuMhjwJY1FctusNLt299d5tnUtF2HY-2BrF-2Ft2Igvm7dqnTIag5TNkv6HHXLVcpowjC5t5JsSwY-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable"> example.devopsbliss.com</a></div>
+          </div>
+          <div>&nbsp;</div>
+          <div>To do so, I created the following record in CloudFlare, a CNAME pointing to our loadbalancer url:</div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_image-90" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei1.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+          <div id="x_text-67" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block;">
+          <div class="x_ce">
+          <div>&nbsp;</div>
+          Let's check it out in the browser:
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_image-70" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="ei2.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+          <div id="x_text-35" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block;">
+          <div class="x_ce">
+          <div>&nbsp;</div>
+          And done!
+          <div><br />
+          <div>&nbsp;</div>
+          <div>Right now, however, all CNAMES that are added will go to the same service, which is not quite what we want. It's ok for one service, but not many.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>For example, the load balancer url still shows my application as well as the new subdomain.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>We really only want to serve this content to <a id="x_link-5153-51" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLkNmJl5wAopnKNDAa2DCAk11TZju90X9BN7rd-2B8c-2F6R3AiqpPQE-2F-2BCYorosnwjjn2Cq3N4jBUMKGic8MEfqihiZWsYPCjXFXzAJNIyXkGHhzAPvkupoznNWxCGL-2FX5lqIEkKh2wAeK1iSKIVUyBttuJSpeijksA-2FE1NT-2F7-2FBEgvVNHlQfGySXxm1HJ8OkpBIUAts4CIiFqwW-2FXB1AaO7KOWOQcmoTKAuBY2hbKEU9HcVkB4XmD4LRObZUux7P3p-2BNzujwZfsHG-2FRKnMQrzhFgZghe4kELDnBV8TlaZwgkMi8-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAEzpyRwIj3BYP9a6B6-2BSo6P5Ier8DXtZcIuDBrHb1ksC2yIs4MGMWXW8d3QYZl-2FsdQlg5oKgFdXAP9HvzvXSjU4y8DHGMwA8EMX7ogOMzOSInXNa3SR4q5nmR9uxl5rvU4QuaOUG0ZkZmuH-2FTn3270VD8fiuPCvMpRnusPqhPF9gdGVnqrBNcaiYfWSG-2FeDCg-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">example.devopsbliss.com,</a> not anything else.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Also, we still need to enable HTTPS traffic.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Let&rsquo;s start by allowing HTTPS traffic - open up `<strong>proxy.yml</strong>` in your local development environment.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>We need to modify ports to have `<strong>443:443</strong>` as well as `<strong>80:80</strong>`.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          </div>
+          <div id="x_text-58" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont; display: block;">
+          <div class="x_ce">proxy:
+          <div>&nbsp; image: vfarcic/docker-flow-proxy:${TAG:-18.04.06-12}</div>
+          <div>&nbsp; ports:</div>
+          <div>&nbsp; &nbsp; - 80:80</div>
+          <div>&nbsp; &nbsp; - 443:443</div>
+          </div>
+          </div>
+          <div id="x_text-65" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+          <div class="x_ce">Once we deploy this, HTTPS will be enabled for the proxy, which maps to Swarm's port 443.
+          <div><br />
+          <div>&nbsp;</div>
+          <div>Lastly, in <strong>stack.yml</strong>, we need to specify a &ldquo;<strong>serviceDomain</strong>&rdquo; so that the proxy will only serve traffic when it is coming from the correct domain.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Replace `<strong>com.df.servicePath</strong>` with `<strong>com.df.serviceDomain</strong>` like so:</div>
+          </div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_text-36" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+          <div class="x_ce">&nbsp;labels:
+          <div>&nbsp; &nbsp;- com.df.notify=true</div>
+          <div>&nbsp; &nbsp;- com.df.serviceDomain=$DOMAIN</div>
+          <div>&nbsp; &nbsp;- com.df.port=3000</div>
+          </div>
+          </div>
+          <div id="x_text-56" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+          <div class="x_ce">
+          <div>&nbsp;</div>
+          <div>Let&rsquo;s commit and push. Then from the server we can pull our updates and deploy them.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Mine are pushed to the `<strong>stack/service-domain</strong>` branch.</div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>Back in your server, connected by SSH, update your git repo by git pulling, or checking out the appropriate branch.</div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_text-57" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+          <div class="x_ce">
+          <div>cd ~/dev/infrastructure</div>
+          <div>sh connect.sh</div>
+          </div>
+          </div>
+          <div id="x_text-54" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+          <div class="x_ce">
+          <div>&nbsp;</div>
+          Then from the manager node run (with my repo as a remote):
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_text-40" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+          <div class="x_ce">git fetch --all
+          <div>git checkout stack/service-domain<br />
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          </div>
+          <div id="x_text-68" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+          <div class="x_ce">(or git pull if you're using your own)
+          <div><br />
+          <div>&nbsp;</div>
+          <div>Then deploy the updated proxy, and stack files.</div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          </div>
+          <div id="x_text-98" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+          <div class="x_ce">docker stack deploy -c proxy.yml proxy</div>
+          </div>
+          <div id="x_text-63" class="x_editableElement x_mfs_20" style="padding-top: 15px; display: block;">
+          <div class="x_ce">
+          <div>&nbsp;</div>
+          When we deploy the stack this time, we'll need to specify the DOMAIN as well.
+          <div>&nbsp;</div>
+          <div>We'll build and tag a new version and push it to our registry, so our production cluster can access it. (See previous lesson for refresher on that), and then deploy it again with the new VERSION.<br />
+          <div><br />
+          <div>&nbsp;</div>
+          <div><strong>VERSION=1.1 DOMAIN=example.devopsbliss.com docker stack deploy -c stack.yml split-test&nbsp;</strong></div>
+          <div>&nbsp;</div>
+          <div>&nbsp;</div>
+          <div><a id="x_link-7107-366" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLkNmJl5wAopnKNDAa2DCAk2zj2iQ5mBRzdVFtB9nM92iHeQI8X-2B6qMyj5HMZCIxDMta08RvXAP-2BRAwm8UxFt-2Bmilp8QZNQRAiJ71IEaL-2BCr2agg7sMpxNcXS3LdF85BP7zJg3xj6op6AYVBR5yskNqsZ66-2FimZy5ITyUeYz1xuRxz-2FnP-2FrzQ-2BGyr9imbh7wp-2F-2Br0zeN4gf4YGSB4cBL4S1pv3bbrMjgz7I52MnkMP0gdRK47bkIGZYNTUUHRYaGS883VWLx43hHltBgJ9DTdQyZUDJEww2Rx6N7w9Pp8fE1Q-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAEzpyRwIj3BYP9a6B6-2BSo6P5Ier8DXtZcIuDBrHb1ksMaHWdeeCtEGojWExbHDm-2FnPH8YZGxKFA8DDZUax-2Fx2nXgxegidErr-2B71qCFfxAyY8yfDNuYH-2FgXkkJQwDKcKd6KZK-2BBxI0n2e8tsI2o4m-2Fx2BRsHx-2FXHic3phc5A-2B4JBddLAfwCEOD7-2F8RlUV3KTNM-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://example.devopsbliss.com/</a> still works, but going to the load balancer address, you should now receive a 503 error that nothing is configured at this route.</div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          </div>
+          </div>
+          <div id="x_text-32" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+          <div class="x_ce">To verify, SSL should work in a few moments.
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_image-71" class="x_editableElement" style="display: block;"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei3.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+          <div id="x_text-40" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+          <div class="x_ce">
+          <div><span class="markemcidjqed _2dBLo5R3RNAhw2FIkHY0I" data-markjs="true">Congrats</span>, if you've been following along, you are now running a containerized Next.js app on an orchestrator running on AWS.</div>
+          <div>&nbsp;</div>
+          <div>Pretty cool, huh?</div>
+          <div>&nbsp;</div>
+          <div>One more tomorrow, we haven't covered stateful services yet!</div>
+          </div>
+          </div>
+          <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+          <div class="x_ce"><strong><em>Patrick &ldquo;Dangerous with DevOps&rdquo; Scott</em></strong></div>
+          </div>
+      
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

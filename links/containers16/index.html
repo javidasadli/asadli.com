@@ -1,0 +1,268 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+ 
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] Production Orchestration (Part 3 of 3)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            08 December 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    <div id="x_text-31" class="x_editableElement x_de-editing-element x_de-editing-now" style="font-size: 16px;">
+      <div class="x_ce">No need for the formalities at this point!
+      <div><br />
+      <div>Let&rsquo;s jump right in.</div>
+      <div>&nbsp;</div>
+      <div>First, connect to your cluster from your infrastructure directory.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-57" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">cd ~/dev/infrastructure
+      <div>sh connect.sh</div>
+      </div>
+      </div>
+      <div id="x_text-81" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Now, in the swarm, we need our stack file.
+      <div><br />
+      <div>The easiest way to get these is simply git cloning our repo over http. You can also set up an ssh key on this machine for convenience - follow the tutorial on Github for &ldquo;Linux&rdquo; to do so if you don&rsquo;t know how. I suggest using a password.&nbsp;</div>
+      <div>&nbsp;</div>
+      <div><a id="x_link-7981-154" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL-2F2NfuRklIj7PzG0j-2FhkD8qHxso9rBDsI9x-2BR3sLHy92xtcJREfw2fvtL9fh1HU8WXQigcnzUzqJYdVSUdTJmuEJ0qXxtUT5uzUWiH9N4ufKZNAKFruHrNX315Ef7oOtPEijdA7ResvsOPaYE1LzEA8dCKbqS4CRFnfhsNBAhDFRs8ILtv2UZgEIgwanl3i-2BgpoIcvRnjS87PrrapsC9lJAacXBDtwpHK-2ByBTSX-2FVsnVTbt-2B-2Fr2msYfRBLblsUd7Y-2BucvJ9V3uUqLeE9TSgAJcC9BINRERMjtFhxhOv9b6ewubAaK10PvoOu5LLtu2oyqJZSmbwlXrTQJfAsk59KDLwlUrXvKQb76o2EkFrAxZoiLw4tulxVLGdhnzeEhSfJg_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dBfDP86zy6w4Jgq-2B6PoPRyhXwl9auxs7x-2BzuaMCXYjUaHUzCo-2BGPf21TNz8F5QwslM1FUwUk8-2BlwXJzw0zWI5bxuIajY-2BYl0Uihl9huQA5sQ-2F4sZAs-2F840RNlpYw03MP4TRYUF4-2FS4e8k5DqxmY-2FhxmmateVYbHnr5uZUo69192o803cFAbQjt-2FrF8-2FDN-2BgLW8-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/#platform-linux</a></div>
+      <div>&nbsp;</div>
+      <div>We&rsquo;ll also need to install git on our server.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-21" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">sudo apk update
+      <div>
+      <div>sudo apk add git</div>
+      <div>&nbsp;</div>
+      <div>git clone https://github.com/patrickleet/split-test-tutorial.git</div>
+      <div>&nbsp;</div>
+      <div>cd split-test-tutorial</div>
+      <div>&nbsp;</div>
+      <div># if you are using my repo instead of yours,</div>
+      <div># checkout the stack/stack branch</div>
+      <div>git checkout stack/stack</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-72" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: Helvetica, Arial, sans-serif, serif, EmojiFont; color: #222222;">
+      <div class="x_ce"><strong>Now we can follow the same exact process that we ran on our local cluster</strong></div>
+      </div>
+      <div id="x_text-33" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      # set up the network and proxy
+      <div>docker network create --driver=overlay proxy</div>
+      <div>docker stack deploy -c proxy.yml proxy</div>
+      <div>&nbsp;</div>
+      <div># deploy</div>
+      <div>VERSION=1.1 docker stack deploy -c stack.yml split-test</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-12" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Head on over to Amazon and grab your LoadBalancer URL from the Outputs tab on the CloudFormation page for your stack. It&rsquo;s under the key &ldquo;DefaultDNSTarget&rdquo;.
+      <div>
+      <div>&nbsp;</div>
+      <div>If all went well, that url should show our newly deployed application, as port 80 is being routed to it.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_image-3" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+      <div id="x_text-22" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">Of course, it&rsquo;d be better if it was your own domain name&hellip;
+      <div><br />
+      <div>More on that later&hellip; let&rsquo;s see what else this thing can do!</div>
+      <div>&nbsp;</div>
+      <div>How about scaling this service? Let&rsquo;s run 3 instances of it.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-9" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">$ docker service scale split-test_split-test=3
+      <div>split-test_split-test scaled to 3</div>
+      <div>overall progress: 3 out of 3 tasks</div>
+      <div>1/3: running [==================================================&gt;]</div>
+      <div>2/3: running [==================================================&gt;]</div>
+      <div>3/3: running [==================================================&gt;]</div>
+      <div>verify: Service converged</div>
+      </div>
+      </div>
+      <div id="x_text-38" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: Helvetica, Arial, sans-serif, serif, EmojiFont;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      To check the services running in our stack, run&nbsp;
+      <div>&nbsp;</div>
+      <div><strong>docker</strong>&nbsp;<strong>stack ps split-test</strong></div>
+      </div>
+      </div>
+      <div id="x_text-49" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">You should see three instances. Scaling done.
+      <div><br />
+      <div>To see logs, run&nbsp;</div>
+      <div>&nbsp;</div>
+      <div><strong>docker service logs split-test_split-test</strong></div>
+      <div>&nbsp;</div>
+      <div>And lastly for today, let&rsquo;s kill one of them and see what happens!</div>
+      <div>&nbsp;</div>
+      <div>First, let&rsquo;s ssh into the worker node where they are running - it&rsquo;s listed in the <strong>docker stack ps</strong> command we just ran above.</div>
+      <div>&nbsp;</div>
+      <div>Mine is ip-172-31-13-134.ec2.internal</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-99" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont; padding-top: 15px;">
+      <div class="x_ce">$ <strong>ssh ip-172-31-13-134.ec2.internal</strong>
+      <div>The authenticity of host 'ip-172-31-13-134.ec2.internal (172.31.13.134)' can't</div>
+      <div>be established.</div>
+      <div>ECDSA key fingerprint is SHA256:zxGsqNZlb7zX5d+1x55s8p4a7ntC8sj9kg6kVQG0zsI.</div>
+      <div>Are you sure you want to continue connecting (yes/no)? yes</div>
+      <div>Warning: Permanently added 'ip-172-31-13-134.ec2.internal,</div>
+      <div>172.31.13.134' (ECDSA) to the list of known hosts.</div>
+      <div>Welcome to Docker!</div>
+      <div>~ $</div>
+      </div>
+      </div>
+      <div id="x_text-15" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">We&rsquo;re in! Earlier when we created the connect.sh script, the -A flag we used is what allows this command to work. It signifies that they same key should be used to connect on ssh calls from the ssh&rsquo;d into machine.
+      <div>&nbsp;</div>
+      <div>Run<strong> docker container ls</strong> to see the containers running on this node. Copy and paste this output to a wide monitor to read it easily.</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-72" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block;">&nbsp;</div>
+      <div id="x_text-44" class="x_editableElement x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">fef8f2af18ff patrickleet/split-test:1.1 "npm run start"
+      <div>5 minutes ago Up 5 minutes (healthy) 3000/tcp</div>
+      <div>split-test_split-test.2.4eb8sf12g96ble7oq7djcte7g</div>
+      <div>91e58cd5bb52 patrickleet/split-test:1.1 "npm run start"</div>
+      <div>5 minutes ago Up 5 minutes (healthy) 3000/tcp</div>
+      <div>split-test_split-test.3.g000j6d3jjhaqkpvhfl0vym10</div>
+      <div>876b8190dcff patrickleet/split-test:1.1 "npm run start"</div>
+      <div>8 minutes ago Up 8 minutes (healthy) 3000/tcp</div>
+      <div>split-test_split-test.1.by6dleimnk9h5iv5q93lf5jzs</div>
+      <div>79712263600d vfarcic/docker-flow-proxy:18.04.06-12 "/sbin/tini -g --</div>
+      <div>do&hellip;" 12 minutes ago Up 12 minutes (healthy) 80/tcp, 443/tcp, 8080/tcp</div>
+      <div>proxy_proxy.1.p1v32k2ak1cc827r2asdz32jm</div>
+      <div>a530882f4d96 docker4x/guide-aws:18.03.0-ce-aws1 "/entry.sh"</div>
+      <div>6 hours ago Up 6 hours</div>
+      <div>guide-aws</div>
+      <div>c520ba419ffb docker4x/shell-aws:18.03.0-ce-aws1 "/entry.sh /usr/</div>
+      <div>sbin&hellip;" 6 hours ago Up 6 hours 0.0.0.0:22-&gt;22/tcp</div>
+      <div>shell-aws</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-31" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">&nbsp;</div>
+      <div id="x_text-11" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block; padding-top: 15px;">
+      <div class="x_ce">What happens if we remove one of the containers running our application - simulating the process failing. Copy the &ldquo;id&rdquo; of the container you want to kill.&nbsp;
+      <div>&nbsp;</div>
+      <div>Then run:</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-90" class="x_editableElement x_mfs_20" style="display: block; padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">docker container kill fef8f2af18ff</div>
+      </div>
+      <div id="x_text-91" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Running <strong>docker container ls</strong> again shows a new container was created to replace the failed container.
+      <div>&nbsp;</div>
+      <div>We told swarm we wanted three containers, so if it notices the system is ever running less, it will adjust by creating new containers to satisfy the constraint we set earlier.</div>
+      <div>&nbsp;</div>
+      <div>Fault tolerance - done.</div>
+      <div>&nbsp;</div>
+      <div>Pretty powerful stuff! We&rsquo;re really only scratching the surface here.</div>
+      <div>&nbsp;</div>
+      <div>And tomorrow is the second to last lesson!</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-15" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">&nbsp;</div>
+      <div id="x_text-65" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">&nbsp;</div>
+      <div id="x_text-33" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">&nbsp;</div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick &ldquo;Production Orchestrator&rdquo; Scott</em></strong></div>
+      </div>
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

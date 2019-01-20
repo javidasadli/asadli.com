@@ -1,0 +1,173 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+ 
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] The Production Stack - Continuous Delivery (Part 1 of 2)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            04 December 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+      <div id="x_image-45" class="x_editableElement" style="display: block;"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+      <div id="x_text-31" class="x_editableElement" style="font-size: 16px;">
+      <div class="x_ce">
+      <div>In this lesson, now that we have manually pushed our containers to our registries, let's explore a more automated way to get them there.</div>
+      <div>&nbsp;</div>
+      <div>Although we don&rsquo;t have enough time in GDD to get to full blown continuous deployment..<em>&nbsp;(we will in my upcoming DevOps Bliss course though!)&nbsp;</em>By making use of Docker, docker-compose, and Makefiles, we can make a pretty darn good local <strong>continuous delivery</strong> pipeline.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Look at the image at the top of the email - I've included a table where it breaks down the difference between the different stages of <strong>continuous integration, continuous delivery, and continuous deployment.</strong></div>
+      <div><strong><br /> </strong></div>
+      <div>Our goal is all of the steps in the first two columns that we can.</div>
+      <div>&nbsp;</div>
+      <div>To do so, we are going to use a tool called "<strong>make</strong>"</div>
+      <div>&nbsp;</div>
+      <div><strong>make</strong> is a simple task runner that comes on most linux distributions.</div>
+      <div>&nbsp;</div>
+      <div>We can use <strong>make</strong> to define a "<strong>Makefile</strong>" for the project, which essentially just groups sets of commands under the same key so we can do more complex steps as a single command.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>We want to create a Makefile that can execute each of the commands in our build process, and then tag and push the image to Docker Hub.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s the Makefile (note: make uses tabs, not spaces):</div>
+      </div>
+      </div>
+      <div id="x_text-37" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">ci:
+      <div>&nbsp;VERSION=${VERSION} make docker-build \</div>
+      <div>&nbsp; tag \</div>
+      <div>&nbsp; push</div>
+      <div>&nbsp;</div>
+      <div>docker-build:</div>
+      <div>&nbsp;docker build -t split-test .</div>
+      <div>&nbsp;</div>
+      <div>tag:</div>
+      <div>&nbsp;docker tag split-test patrickleet/split-test:${VERSION}</div>
+      <div>&nbsp;</div>
+      <div>push:</div>
+      <div>&nbsp;docker push patrickleet/split-test:${VERSION}</div>
+      </div>
+      </div>
+      <div id="x_text-12" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">If you&rsquo;ve used make before, it&rsquo;s pretty clear.&nbsp;
+      <div>&nbsp;</div>
+      <div>If not, it still probably is.&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>We've defined 4 steps, ci, which simply calls all of the others, which are "docker-build", "tag", and "push". You'll recognize the docker commands our make steps execute.</div>
+      <div>&nbsp;</div>
+      <div>
+      <div>&nbsp;</div>
+      <div>When we run it, and can specify a new version number as an environment variable.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s try it out - I&rsquo;ll give it a version number of 1.0</div>
+      <div>&nbsp;</div>
+      <div><strong>VERSION=1.0 make ci</strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>This triggers Docker to build the image for the container described by the Dockerfile.</div>
+      <div>&nbsp;</div>
+      <div>As part of that Dockerfile, we are using a "Multi-stage build", which actually can easily run our linting, and unit tests as part of that process.</div>
+      <div>&nbsp;</div>
+      <div>Although it's local, this is actually a pretty decent Continuous Delivery pipeline, even though we need to manually specify the version number and run it locally.</div>
+      <div>(things that we automate away in my full DevOps Bliss course!)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Now, the 1.0 tag is available on Docker Hub:&nbsp;</div>
+      <div>&nbsp;</div>
+      <div><a id="x_link-6659-223" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL78lIUPfIDFbv9FfKbrdYdxEL9pRCj55NWmXlLdt5ZJyATlYd2xYbXXvh3sogRXxLt8aE9HzqGLXpG2DT9GCfjvhlKoSFoMXy5UYenJOZ1tvP8Zv0W6XciiE1tG2LdcQjkQv2xHkBtsSc7JmI-2BjmSPpvr-2B0P2lmCzpmU9baCTxCaefcOxbwvZTXd3P7l4hiMKlueCVumt9xNhwUG1sah3s7M5E1s103RTbQyxHM35wH9oROyrKgu3u63xv-2B52GT6HUzMz-2BTuUnw8wBjEOMz-2Bom9628-2FcuUYFq-2F8LsZdIKgnGOZSMmHlL8dZhKMxk-2FcDGhyTb91XhbAJEQITOGrzpTrA-3D-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAPEjvenvgoe1hcazD6uy2-2FB8h6HMV1MKFsAqtX67Qxv3fsr1RKv9fVsWU0IRusxnASasW42z0RALiq9-2FWxb6OGL7iAJ69U7xyROjfRgEC5n4h8PJHYWPzcf98e5ENVCNH-2BPxMrXs2uqDKuHkRcP-2BXPV4o9JrXHmaLsDmsWzm0cqRWTkJOZhd0uO0yp5S8ZmqM-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://hub.docker.com/r/patrickleet/split-test/tags/</a></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Anytime we want to create a new release, all we have to do is specify a new version number, and run `<strong>make ci</strong>`.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Now that we have a consistent way to build our image, we just need the actual config file that will use it.</div>
+      <div>&nbsp;</div>
+      <div>You could run this same script `<strong>make ci</strong>` on a build server, and it will work the exact same way there!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>In my article*, I commit to master, which we've referenced a few times, I show how to hook this up to each commit automatically using Husky. Check it out if you still haven&rsquo;t.</div>
+      <div>&nbsp;</div>
+      <div>Do this as your homework tonight! That way you'll be one step closer to being able to commit to master yourself!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick &ldquo;Continuously Delivering&rdquo; Scott</em></strong></div>
+      </div>
+      <div id="x_text-25" class="x_editableElement x_mfs_20">
+      <div class="x_ce">
+      <div>* <a id="x_link-1698-110" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL78lIUPfIDFbv9FfKbrdYdxEL9pRCj55NWmXlLdt5ZJyYtRENoZlBOMeZrO2qf2oKwe-2Bo6hkKzj8L7CIGoJXAO171toyyLGOM3ocEvEDyMnmW8jJkAGuLxb6caqYLD2zU4gt983lsbIuNTB6haAESx2r7xX2qtK6nM9lu4jTU1q3JYJPv1uLb-2BwKHARvjFC6TKiu-2BuudSGQ1TQs6Y2NvPRmLP07oDLP0-2BzaKXPgeV2dn0JVaBH-2FdyfWROry3ywZeMFkXi-2B6igNoKzxv-2BE5o7S-2FgwEJuly1P-2F-2BgFfgsxAztWDybhNjPOLsDHUTMwGDf2LLAzOzBGGeB-2FoRp8rhvhIxyaoha9OoA52aTjJSIiBH4oU-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAPEjvenvgoe1hcazD6uy2-2FB8h6HMV1MKFsAqtX67Qxv4CzbVmyCOhJYy2-2B6Ns8HgTjOHi95CQ9ui-2Fq8RtNTUsSPsuSiz0gGMWEiVlYOn-2FbGcwLMB5RQSQVCDP7rRoIbHRw-2FmRIIKZ1Uw-2FNZrsgsn4E4pq1CpickVgzBp-2FYIKa4y3FC84y-2B-2BjCp3AvlivnNvOA-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://hackernoon.com/i-have-a-confession-to-make-i-commit-to-master-6a804f334beb.&nbsp;</a></div>
+      </div>
+      </div>
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

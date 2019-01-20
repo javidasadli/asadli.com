@@ -1,0 +1,274 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+ 
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] Production Orchestration (Part 2 of 3)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            07 December 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    <div id="x_text-31" class="x_editableElement x_de-editing-element x_de-editing-now" style="font-size: 16px; display: block;">
+      <div class="x_ce">By now, your cluster's status should be &ldquo;<strong>CREATE_COMPLETE</strong>&rdquo; in the AWS Cloudformation dashboard.
+      <div>&nbsp;
+      <div>&nbsp;</div>
+      <div>Ready to explore?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Open up your AWS Dashboard, and head to &ldquo;CloudFormation&rdquo;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Click the checkbox to select your new &ldquo;Stack&rdquo; and then select the &ldquo;Outputs&rdquo; tab.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>The first key &ldquo;DefaultDNSTarget&rdquo; contains the web address of your cluster&rsquo;s load balancer.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>If you try to go to it, you will receive an error message &ldquo;This site can&rsquo;t be reached&rdquo;.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>This is because we have not exposed any ports to the internet, and we have not deployed any services, sites, or applications to receive those ports requests.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Having run a docker swarm cluster earlier, you know this means we need to set up our proxy, and expose ports 80 for HTTP, and 443 for HTTPS.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Due to security restrictions, we cannot run these from our local machine anymore. Instead we have to &ldquo;ssh&rdquo; into the cluster, and then run them.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>You&rsquo;ll need your key from yesterday.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>We&rsquo;ll also need an IP address of a Manager node. We already have the key, so let&rsquo;s get our one Manager node&rsquo;s IP address.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Click the link on the same &ldquo;Outputs&rdquo; panel under the &ldquo;Managers&rdquo; key to open a view on the EC2 Dashboard of your manager nodes.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_image-81" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei1.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+      <div id="x_text-29" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Select your Manager node on the next page, and then click the copy button for the &ldquo;IPv4 Public IP&rdquo; address.
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_image-13" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei2.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+      <div id="x_text-21" class="x_editableElement x_mfs_20">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Alright! We&rsquo;ve got what we need, let&rsquo;s head inside!
+      <div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-89" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+      <div class="x_ce">
+      <div>I moved my key into a private GitHub repository, named `example-docker-swarm-key`</div>
+      <div>&nbsp;</div>
+      <div>
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s slow down for a second, and talk about organization.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>You should organize your code.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Good talk.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s how I organize it.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>I create a root folder, named &ldquo;infrastructure&rdquo;. Then I initialize that folder as a new git repository, and a new meta repository.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>I can then add the key to the meta repository.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Using git permissions, only people who have access to the key's repository will be able to clone it. This way you can keep it with your connection scripts, but only people with permission can access it.</div>
+      <div>&nbsp;</div>
+      <div>There are better solutions for this, but let's just go with it for now. This is pretty good, and more secure than most as github has great RBAC control, and rotating this key is simple.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>This allows you to write some scripts that depend on the file being there, for when it is.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s some more information on meta: <a id="x_link-4585-5" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLgkkdhTYttzglxmEa-2FFI9D25H8IzSsZi5vTDl1J1i-2ByGFgBRoaszSkidoWB9MzeChrQdN2dJXIBslFIgQAC-2FHlN07MC2AIYcYj09Uu-2B2sol2EZ9LvhZx8XXlsV2g3ZiQ8GEho5XQVufLvqiCy7IkLk46dvrNInCfZ2h-2FcCRlpfm4q89zmf48WEbzD2TQ47HchrjPVATmiQ2i-2FukuFu3fylTXIXx-2FLSAlgJ6Vt804UTjNCEhwGyxpuePWr9BqIj4QW9okeSqsLmKLdFk7MfHTfnO47JwVVH7i8FKyENRRomctSgfN6aPz1prb7EKYpB4kXzwVe9IWvUU6OiXCjiATDiKSwzwP6Qnmqg1qZGP-2BTS7Z9NJNzyMdsXqKgDKLq5pLn8k007FoVVVQSkjeHEjWLPA-3D-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAYY-2BR3Y39Sgt0kMZv5FqoXT3xQEDGOUx2MRyJMELPl65lnQE3rVkH-2BFJJNgCpcAr1Ev6eqvltHFd-2B9CseVp-2F-2FxoWqBN4l-2BMzZLjKTq-2BpgHMA8dX4-2FMub5B2o5T2QXdqPw5MqDrz9wwbzuFiw3IBcm5jOCDwlIdsBjPeBDsSkKvBZyFO5O1Hp-2Ftjah53wXyypU-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">Mono-repo or multi-repo? Why choose one, when you can have both?</a></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s go ahead and set that up..</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>First, you&rsquo;ll need `nodejs` to use `meta` (for now), so download and install NodeJs from their website if you don&rsquo;t have it already.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Next, install `meta`</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-94" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">npm i -g meta
+      <div>cd ~/dev/</div>
+      <div>mkdir infrastructure</div>
+      <div>cd infrastructure</div>
+      <div>git init</div>
+      <div>meta init</div>
+      <div># Add YOUR keys (replace YOUR_USER_NAME)</div>
+      <div>meta project add keys git@github.com:YOUR_USER_NAME/example-docker-swarm-keys.git</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-70" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">If you don&rsquo;t want to do all that, no worries, just copy your key into a .gitignored folder names &ldquo;keys&rdquo;, or adjust the scripts accordingly to point to your key.
+      <div>&nbsp;</div>
+      <div>
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s create a script named &ldquo;connect.sh&rdquo; inside of `infastructure` which will connect to our manager node.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-88" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">ssh-add keys/example-docker-swarm.pem
+      <div>ssh -A docker@YOUR-MANAGER-IP-ADDRESS</div>
+      </div>
+      </div>
+      <div id="x_text-65" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Lastly, before our script can be run, we need to change it&rsquo;s permissions. It&rsquo;s kinda like a key to your home in a sheath. It will unlock your home, but you obviously need to take it out of the sheath first.
+      <div><br />
+      <div>&nbsp;</div>
+      <div>To do this run</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-43" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">chmod 400 keys/example-docker-swarm.pem</div>
+      </div>
+      <div id="x_text-2" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">Now every time we want to connect, we can run</div>
+      </div>
+      <div id="x_text-9" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">sh connect.sh</div>
+      </div>
+      <div id="x_text-74" class="x_editableElement x_mfs_20">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      Let&rsquo;s try it out!</div>
+      </div>
+      <div id="x_text-58" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">
+      <div>➜ <strong>sh connect.sh</strong></div>
+      <div>Identity added: keys/example-docker-swarm.pem (keys/example-docker-swarm.pem)</div>
+      <div>&nbsp;</div>
+      <div>The authenticity of host 'xx.xxx.xx.xxx (xx.xxx.xx.xxx)' can't be established.</div>
+      <div>ECDSA key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.</div>
+      <div>Are you sure you want to continue connecting (yes/no)? yes</div>
+      <div>&nbsp;</div>
+      <div>Warning: Permanently added 'xx.xxx.xx.xxx' (ECDSA) to the list of known hosts.</div>
+      <div>&nbsp;</div>
+      <div>Welcome to Docker!</div>
+      </div>
+      </div>
+      <div id="x_text-100" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      We&rsquo;re in!
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s explore a little bit. Next time we will expose some ports and deploy our stacks.</div>
+      <div>&nbsp;</div>
+      <div>Running `<strong>docker node ls</strong>` shows us the nodes that make up our cluster!</div>
+      <div>~ $<strong> docker node ls</strong></div>
+      <div>ID HOSTNAME STATUS AVAILABILITY MANAGER STATUS ENGINE VERSION</div>
+      <div>x230s9996exuh8jgbpms1l71i ip-172-31-13-134.ec2.internal Ready Active 18.03.0-ce</div>
+      <div>tfbpd4rqo5max0k199g3chfrw * ip-172-31-23-231.ec2.internal Ready Active Leader 18.03.0-ce</div>
+      <div>&nbsp;</div>
+      <div>Feel free to check out the docker swarm docs and play around with some commands.</div>
+      <div>&nbsp;</div>
+      <div>If you&rsquo;re feeling adventurous try deploying the stacks we&rsquo;ve created!</div>
+      <div>&nbsp;</div>
+      <div>Tomorrow we&rsquo;ll walk through the process!</div>
+      </div>
+      </div>
+      <div id="x_text-29" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block;">&nbsp;</div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 15px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick &ldquo;connect.sh&rdquo; Scott</em></strong></div>
+      </div>  
+
+
+
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>
