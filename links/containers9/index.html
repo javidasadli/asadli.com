@@ -1,0 +1,340 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      Patrick Scott [GDD] Clusters (Part 1 of 2)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            02 December 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    <div id="x_text-80" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block; padding-top: 15px;">
+      <div class="x_ce">So&hellip;
+      <div>&nbsp;</div>
+      <div>Ready to run a cluster with an orchestrator?</div>
+      <div>&nbsp;</div>
+      <div>
+      <div>&nbsp;</div>
+      <div><strong>Let's run a cluster!</strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Before we run anything on AWS though, we will set up a cluster locally using Virtual Machines to demonstrate the techniques before there is any money involved.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>First, install VirtualBox and Docker For Mac if you have not already. Both are available on [Homebrew-Cask](<a id="x_link-7082-398" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLJPuHhtJmT3Qh-2BSBlaQdMsDRkau-2B8W2KYLEB8VXx6EOjIAubwl8A0nU5KXJmI9ggHWYcNvRI2Vm8cgY9jWoOqFesExNgkKqAOUyMCKYkVn6MD2R-2FMvIXvx-2Fk-2BL3eo3-2BGqwP2JQSXktgS2B8UxJX0rmYbUsbo3ls0JbVMwI0isQif5K2k6cY03qG-2BYeobsIwRbU0ubrtvPSZ7jbvHODec13P6kDmCgyYFolsWEkthLidKBQAuEqqQhdD-2FJN7CQX17o1NTJNcNAAWaInxuSHFZPRBstd7ZZwaLCcqgDUvl4JD0-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dBGHD8W6Mb6KZNQQTmuKqiKfYf1LYK-2B6EHeFwt4FCuHWpfHJryqgyBcZUgYls4EZuwNvMD4xKWHVLk4mlIWgWHYQBwP9ekonIH5sBhsWUR9YI5z480xCLOmxravKyuHNO01PQvpbiwy77ABJS3z5YUIdCF467ZMt1QlTvgDtFfCJ9ure0-2FrTDbqh-2Bu9i790QhM-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://caskroom.github.io/</a>):</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-51" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce"># "tap" homebrew cask if you have not
+      <div>brew tap caskroom/cask</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div># install docker and virtualbox</div>
+      <div>brew cask install docker</div>
+      <div>brew cask install virtualbox</div>
+      </div>
+      </div>
+      <div id="x_text-19" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">Btw, I have these installed as part of my mac development environment setup script:
+      <div><br />
+      <div>[<a id="x_link-271-262" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLJPuHhtJmT3Qh-2BSBlaQdMsDRkau-2B8W2KYLEB8VXx6EOgxPi6P0f2r05TOhBBDcrH-2BLn6kZd5DVXA4GGhAMjq0sbaHvZfmgtPPT6-2BrjwWtkRpBvVrelFhU4bcJKCrx0Tmrk5USCpajSXpy61hOFHNBM-2FrzhgZBMDSmA5AvnT-2FSQNZO1wco9cssV1YaFghW7IDZASDzoEJHB9rgBu4OadWG7-2FCuGvhKrAVKE6I-2B5eMa9wvc5SqfSt8fmSb2aLpbWr-2F-2FVxdtfn95BC4zXFSQj18zOJ2LOqUuVV33tihuMhhfdRRGBDSm6BqKOoLXuoO-2Bob-2F7_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dBGHD8W6Mb6KZNQQTmuKqiKfYf1LYK-2B6EHeFwt4FCuHWnHtSP0J-2FLeinsrKmOQ-2FL3fb-2FCMR7MgEuU686iv5NrL9-2Bcy5BsnauintNSCEU-2FVhAaM0oIAhlc6EQFbuK8-2By4iCigKJBTFyVy8aljaNCrSbBNaKfb6OROmX2HNsIf8vYNVZBi0A-2BWVICO9g89Nrud9k-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">GitHub - patrickleet/macbook-dev-setup: automate your MacBook dev setup</a>] (stars please!)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>And finally, let&rsquo;s set up a <strong>Docker Swarm</strong> on our local machine.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>I have some scripts available to make the process easier.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Go ahead and <strong>git clone</strong> <strong>git@github.com:unbounded-tech/scripts.git</strong></div>
+      <div><strong><br /> </strong></div>
+      <div><strong>Let's take a look:</strong></div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-71" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      &gt; git clone git@github.com:unbounded-tech/scripts.git
+      <div>&nbsp;</div>
+      <div>&gt; cd scripts</div>
+      <div>&nbsp;</div>
+      <div>&gt; ls</div>
+      <div>docker-swarm-kill.sh docker-swarm-large.sh docker-swarm-small.sh</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-41" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>Using "ls" to list the directory's contents revealed three files...</div>
+      <div>&nbsp;</div>
+      Let&rsquo;s start by checking out `<strong>docker-swarm-small.sh</strong>` to see what running it will do
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-85" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">#!/usr/bin/env bash
+      <div><br />
+      <div>&nbsp;</div>
+      <div># Create nodes</div>
+      <div>for i in 1 2; do</div>
+      <div>&nbsp; docker-machine create -d virtualbox node-$i</div>
+      <div>done</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>NODE1_IP=$(docker-machine ip node-1)</div>
+      <div>&nbsp;</div>
+      <div># Initialize the swarm cluster, and set up manager on node-1</div>
+      <div>&nbsp;</div>
+      <div>eval $(docker-machine env node-1)</div>
+      <div>&nbsp;</div>
+      <div>docker swarm init --advertise-addr $NODE1_IP</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div># Generate a worker token for joining the cluster</div>
+      <div>WORKER_TOKEN=$(docker swarm join-token -q worker)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div># Join the next node as a worker</div>
+      <div>for i in 2; do</div>
+      <div>&nbsp; eval $(docker-machine env node-$i)</div>
+      <div>&nbsp; docker swarm join --token $WORKER_TOKEN $NODE1_IP:2377</div>
+      <div>done</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>echo "&gt;&gt; The swarm cluster is up and running"</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div># Print our instructions</div>
+      <div>docker-machine env node-1</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-7" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+      <div class="x_ce">It&rsquo;s pretty simple - if you are not familiar with bash scripting it might seem a bit foreign, but essentially, it is just creating two machines provisioned with virtualbox. The first node does the initialization process, making it a manager node, and the second requests to join as a worker.
+      <div><br />
+      <div>&nbsp;</div>
+      <div>I think the comments are sufficient to explain what is going on inside.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>As I mentioned, two machines would not be sufficient for serious production workloads, but it&rsquo;s ok for our needs of running a small example cluster.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>The last line of the script prints out some instructions.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s give it a try.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-100" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont; display: block;">
+      <div class="x_ce">➜ <strong>sh docker-swarm-small.sh</strong>
+      <div>Running pre-create checks...</div>
+      <div>Creating machine...</div>
+      <div>(node-1) Copying /Users/patrickscott/.docker/machine/cache/boot2docker.iso to /Users/patrickscott/.docker/machine/machines/node-1/boot2docker.iso...</div>
+      <div>(node-1) Creating VirtualBox VM...</div>
+      <div>(node-1) Creating SSH key...</div>
+      <div>(node-1) Starting the VM...</div>
+      <div>(node-1) Check network to re-create if needed...</div>
+      <div>(node-1) Waiting for an IP...</div>
+      <div>Waiting for machine to be running, this may take a few minutes...</div>
+      <div>Detecting operating system of created instance...</div>
+      <div>Waiting for SSH to be available...</div>
+      <div>Detecting the provisioner...</div>
+      <div>Provisioning with boot2docker...</div>
+      <div>Copying certs to the local machine directory...</div>
+      <div>Copying certs to the remote machine...</div>
+      <div>Setting Docker configuration on the remote daemon...</div>
+      <div>Checking connection to Docker...</div>
+      <div>Docker is up and running!</div>
+      <div>To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env node-1</div>
+      <div>Running pre-create checks...</div>
+      <div>Creating machine...</div>
+      <div>(node-2) Copying&nbsp;<br /> <br /> ...<br /> </div>
+      <div>Docker is up and running!<br /> </div>
+      <div>To see how to connect your Docker Client to the Docker Engine running on this virtual machine, run: docker-machine env node-2<br /> </div>
+      <div>Swarm initialized: current node (mac1vviy48lfjsqo4kv65d6yp) is now a manager.<br /> </div>
+      <div>&nbsp;</div>
+      <div>To add a worker to this swarm, run the following command:<br /> </div>
+      <div>&nbsp;</div>
+      <div>&nbsp; &nbsp; docker swarm join --token SWMTKN-1-1m4ammwlcyw36ulgvemydqipaou85sqqyb7cb2k9bnxfp3g8gm-2le18s5qn3w3br6nux7ndg6ng 192.168.99.100:2377<br /> </div>
+      <div>&nbsp;</div>
+      <div>To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.<br /> </div>
+      <div>&nbsp;</div>
+      <div>This node joined a swarm as a worker.</div>
+      <div>&nbsp;</div>
+      <div>&gt;&gt; The swarm cluster is up and running</div>
+      <div>&nbsp;</div>
+      <div>export DOCKER_TLS_VERIFY="1"</div>
+      <div>export DOCKER_HOST="tcp://192.168.99.100:2376"</div>
+      <div>export DOCKER_CERT_PATH="/Users/patrickscott/.docker/machine/machines/node-1"</div>
+      <div>export DOCKER_MACHINE_NAME="node-1"</div>
+      <div>&nbsp;</div>
+      <div># Run this command to configure your shell:</div>
+      <div># eval $(docker-machine env node-1)</div>
+      </div>
+      </div>
+      <div id="x_text-37" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">There&rsquo;s a lot of output from virtualbox at the top as the two nodes are provisioned.
+      <div><br />
+      <div>&nbsp;</div>
+      <div>Then, when the manager node is created we see a &ldquo;Swarm initialized&rdquo; message, telling us how we can add workers to the swarm.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>The script then does just that, by joining node-2 as a worker. The last line of output tells us to configure our shell we need to run a command - let&rsquo;s play along:</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-18" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce"><strong>eval $(docker-machine env node-1)</strong>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-7" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+      <div class="x_ce">
+      <div>
+      <div>&nbsp;</div>
+      <div>All this line does is set some environment variables in our shell that are used by docker to know which host to control.</div>
+      </div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Now, when we run `docker` commands, it will be against the local swarm we just created. (You can run the command "<strong>env</strong>" to see.)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Try it out by running `<strong>docker node ls</strong>`</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-61" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">
+      <div>➜ scripts git:(master) <strong>docker node ls</strong></div>
+      <div>ID HOSTNAME STATUS AVAILABILITY MANAGER STATUS ENGINE VERSION</div>
+      <div>mac1vviy48lfjsqo4kv65d6yp * <strong>node-1</strong> <strong>Ready Active Leader</strong> 18.03.1-ce</div>
+      <div>jopupigfzxrvcr1pvd4e3t5ep <strong>node-2</strong> <strong>Ready Active</strong> 18.03.1-ce</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-80" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      We can see the two nodes that we just created listed here.
+      <div><br />
+      <div>&nbsp;</div>
+      <div><strong><em><span class="mark31bsbu5qa _2dBLo5R3RNAhw2FIkHY0I" data-markjs="true">Congratulations</span>! You are now running a cluster! 🎉</em></strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Even though it looks essentially the same as our docker-compose files, cause it is, when we create it for production, we call it a "<strong>stack</strong>".</div>
+      <div>&nbsp;</div>
+      <div>So the "<strong>stack</strong>" is the service, and maybe it's dependencies like a database or a proxy configured for production.</div>
+      <div>&nbsp;</div>
+      <div>Tomorrow, we&rsquo;ll explore how to deploy our &ldquo;<strong>stack</strong>&rdquo; we&rsquo;ve been working on to the cluster.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>For now, you can stop the cluster, we&rsquo;ll pick back up where we left off tomorrow.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Run `<strong>sh docker-swarm-kill.sh</strong>` to stop the cluster.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-42" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="display: block; padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">➜ <strong>sh docker-swarm-kill.sh</strong>
+      <div>&nbsp;</div>
+      <div>WARNING: This will stop all running docker-machine's!</div>
+      <div>&nbsp;</div>
+      <div>Below are your running machines:</div>
+      <div>NAME ACTIVE DRIVER STATE URL SWARM DOCKER ERRORS</div>
+      <div>node-1 * virtualbox Running tcp://<a id="x_link-3831-227" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLJPuHhtJmT3Qh-2BSBlaQdMsHD79tNnanslBnxKSm-2FCYIT-2BsobER2lkoecbr7dyx4qDAAlkfS-2BRR2VFtRE3xEfRvKc3Mk4ZJQ-2BuzEhtMaiGOpPKyJJu-2F2ui8T1gbdUnzcaIsqYNwtoL6Xlr2xLYrVs9ig-3D-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dBGHD8W6Mb6KZNQQTmuKqiKfYf1LYK-2B6EHeFwt4FCuHWoUMacXv9uPR42mIjbgZKVgHhzo-2FBI1rFipYVUa5XHelOHxjfd0TElb85-2FDFtxnfoLZNysZk-2Baw6yWiJxZY2Radl9XZVzRzTLHrrV3F50ur-2FwLvGLtHvYyMOz0f3jkuaxfsRU28BZEsPOhaqtOa2kps-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">192.168.99.100:2376 v18.03.1-ce</a></div>
+      <div>node-2 - virtualbox Running tcp://<a id="x_link-8660-361" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLJPuHhtJmT3Qh-2BSBlaQdMsHD79tNnanslBnxKSm-2FCYIS8EzdFY52-2BWiApbN6bWzDR6roLDcPLPRn9X47sXWIvansRJ7Rsv8hPAB0aD9YgSc3zEV93TmFbBh0uhOaxMqBBsll4MW3j4JD-2BSuuIE0VF1Q-3D-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dBGHD8W6Mb6KZNQQTmuKqiKfYf1LYK-2B6EHeFwt4FCuHWjq5p-2FDk4XlK6sh5X7bJNZwFEiUScIiOJspe-2FQo6jG3IMDMm37S2L0Enf3W17UaMQ5jBwVEa5n75xNYXjBqes1Hl2qG13ulWhGM7Bsg7Uh5i2wE24mUspunOuDBI0vfNoWnMmZ45wZr6BdNuhmovfiY-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">192.168.99.101:2376 v18.03.1-ce</a></div>
+      <div>Are you sure you wish to continue? [y/n] y</div>
+      <div>Stopping "node-1"...</div>
+      <div>Stopping "node-2"...</div>
+      <div>Machine "node-2" was stopped.</div>
+      <div>Machine "node-1" was stopped.</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-24826" class="x_editableElement x_de-editing-element x_de-editing-now" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick &ldquo;Swarm Killer&rdquo; Scott</em></strong></div>
+      </div>
+      <div id="x_text-56888" class="x_editableElement" style="padding-top: 20px; display: block;">
+      <div class="x_ce">P. S. Btw, this was actually MORE difficult than running a Docker Swarm in production, believe it or not. :)</div>
+      </div>
+      <p>&nbsp;</p>
+
+
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+ 
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+        [GDD] Stateful Services
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            10 December 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+      <div id="x_text-31" class="x_editableElement" style="font-size: 16px;">
+          <div class="x_ce">There is still one more small change when running locally vs. running in a cloud environment like AWS that was beyond the scope of getting our Node app running, but also important.
+          <div>&nbsp;</div>
+          <div>The configuration we tested out for MongoDB earlier would need one small change if we wanted our volumes to actual persist in the cloud.</div>
+          <div>&nbsp;</div>
+          <div>The way we last configured them with volumes.. They would work... but probably not for long.</div>
+          <div>&nbsp;</div>
+          <div>We need to specify a volume plugin to use when we are using a cloud provider, so they are actually persisted.</div>
+          <div>&nbsp;</div>
+          <div>This plugin tells AWS or wherever you are running HOW to create a volume using their available infrastructure.</div>
+          <div>&nbsp;</div>
+          <div>When we set up Docker For AWS we clicked a box about Cloudstor - this is the volume driver.</div>
+          <div>&nbsp;</div>
+          <div>Cloudstor use EFS, a network volume, by default. EBS can be specified as well, and should be for write or read heavy services.</div>
+          <div>&nbsp;</div>
+          <div>Depending on the throughput on MongoDB in our example stack, EBS might be a better choice. We will use EFS as it's the default.</div>
+          <div>&nbsp;</div>
+          <div>Back in our split testing application we made a file stack.yml</div>
+          <div>&nbsp;</div>
+          <div>Let&rsquo;s make another, just for demonstration purposes called db.yml</div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_text-21" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+          <div class="x_ce">version: '3.4'
+          <div><br />
+          <div>networks:</div>
+          <div>&nbsp;</div>
+          <div>&nbsp; mongo:</div>
+          <div>&nbsp;</div>
+          <div>services:</div>
+          <div>&nbsp;</div>
+          <div>&nbsp; mymongodb:</div>
+          <div>&nbsp; &nbsp; image: mongo</div>
+          <div>&nbsp; &nbsp; networks:</div>
+          <div>&nbsp; &nbsp; &nbsp; - mongo</div>
+          <div>&nbsp; &nbsp; volumes:</div>
+          <div>&nbsp; &nbsp; &nbsp; - mongo-data:/data/db</div>
+          <div>&nbsp;</div>
+          <div>volumes:</div>
+          <div>&nbsp; mongo-data:</div>
+          <div>&nbsp; &nbsp; driver: cloudstor:aws</div>
+          <div>&nbsp; &nbsp; external: false</div>
+          </div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_text-87" class="x_editableElement x_mfs_20" style="padding-top: 15px;">
+          <div class="x_ce">Notice the driver option specified as cloudstor:aws .
+          <div><br />
+          <div>This is all that&rsquo;s needed to configure the plugin when using cloudstor with Docker for AWS!&nbsp;&nbsp;</div>
+          <div>&nbsp;</div>
+          <div>There are other options for Docker Swarm as well, such as RexRay, and more options available for cloudstor as well, so feel free to check them out!</div>
+          </div>
+          <div>&nbsp;</div>
+          </div>
+          </div>
+          <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+          <div class="x_ce"><strong><em>Patrick &ldquo;Cloud Storer&rdquo; Scott</em></strong></div>
+          </div>
+      
+      
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

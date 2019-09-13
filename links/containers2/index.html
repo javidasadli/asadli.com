@@ -1,0 +1,253 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+   
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] Orchestrating Containers (Part 2 of 5)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            25 November 2017
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    <div id="x_text-31" class="x_editableElement" style="font-size: 16px; display: block;">
+      <div class="x_ce">
+      <div>
+      <div>I&rsquo;m so excited for your journey. Still have some awesome stuff coming up in the free course, and even more beyond that!</div>
+      <div>&nbsp;</div>
+      <div>I've been working really hard on these courses.</div>
+      <div>&nbsp;</div>
+      <div>My original goal was to teach Microservices, but I realized that I couldn't tell that story without DevOps.</div>
+      <div>&nbsp;</div>
+      <div>This course teaches you the fundamentals you need to be a part of the DevOps world, and the DevOps world is in a beautiful renaissance.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>GitOps is a favorite subject of mine.</div>
+      <div>&nbsp;</div>
+      <div>DevOps, in my opinion - GitOps being the best flavor, is the prerequisite for microservices.</div>
+      <div>&nbsp;</div>
+      <div>"With simplicity of the services, some complexity necessarily moves to the architecture"</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>If you think anything we've done so far is powerful, what's yet to come&nbsp; is gonna blow your mind.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>🤯🤯🤯</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>We haven&rsquo;t even scratched the surface of how powerful this stuff is.</div>
+      </div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_image-50" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="https://outlook.live.com/actions/ei?u=http%3A%2F%2Fwww.cloudnative.institute%2Fhosted%2Fimages%2Ff4%2F541d516e3711e89715c141df86a31f%2Fyouknownothing.jpg&amp;d=2018-12-03T13%3A28%3A00.206Z" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+      <div id="x_text-14" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 10px;">
+      <div class="x_ce">Let me give you a taste:
+      <div><br />
+      <div>&nbsp;</div>
+      <div>Image if running `npm install rabbitmq` set up a production ready, highly-available, rabbitmq deployment in your production system.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Wouldn&rsquo;t that be amazing?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>How much time do you think you&rsquo;d save?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Is it even possible for it to be so simple?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Hint: Yes. But it&rsquo;s not npm that will give you that power (or an AWS certification.. lol 😂)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>NOW&hellip;</div>
+      <div>&nbsp;</div>
+      <div>For today&hellip;</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>I&rsquo;m also excited for you, because I want to reveal my &ldquo;productivity hack&rdquo; I told you about earlier on.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>So many tutorials on the internet get this wrong.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>That is - the proper way to handle Development Orchestration.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>This enables you to onboard new engineers with a single command.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>No more &ldquo;it works on my machine&rdquo;.</div>
+      <div>&nbsp;</div>
+      <div>I've even had engineers COMMIT TO MASTER AND DEPLOY TO PRODUCTION ON THEIR FIRST DAY.</div>
+      <div>&nbsp;</div>
+      <div>How long do you spend on onboarding? How long did it take you to get code to production in your current gig?</div>
+      <div>&nbsp;</div>
+      <div>Anyway...</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Yesterday I showed you how to orchestrate the production ready container we built.</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-35" class="x_editableElement x_mfs_20" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">version: '3.4'
+      <div>&nbsp;</div>
+      <div>services:</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;my-container:</div>
+      <div>&nbsp; image: my-container</div>
+      <div>&nbsp; ports:</div>
+      <div>&nbsp; &nbsp;- 3000:3000</div>
+      </div>
+      </div>
+      <div id="x_text-78" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      While this is perfectly valid for running a built container, you lose out on all of your development tooling!
+      <div>&nbsp;</div>
+      <div>No hot reloading, hell, you can&rsquo;t even make changes and hit refresh!</div>
+      <div>&nbsp;</div>
+      <div>Not great for a development workflow.</div>
+      <div>&nbsp;</div>
+      <div>Actually, quite bad, haha. 😂</div>
+      <div>&nbsp;</div>
+      <div>Luckily, it&rsquo;s an easy fix.</div>
+      <div>&nbsp;</div>
+      <div>Many tutorials will tell you that you need to create a development version of your <strong>Dockerfile</strong>. `<strong>Dockerfile.dev</strong>` or similar.</div>
+      <div>&nbsp;</div>
+      <div>I&rsquo;m telling you, this is SO very wrong.</div>
+      <div>&nbsp;</div>
+      <div>Instead of making a Dockerfile which adds all of your code, I want to reframe your ideas on what a container can be.</div>
+      <div>&nbsp;</div>
+      <div>This is also exactly how I started making containers.</div>
+      <div>&nbsp;</div>
+      <div>Here's how you should look at docker containers:</div>
+      <div>&nbsp;</div>
+      <div><strong>An environment that you can place your code into to run.</strong></div>
+      <div>&nbsp;</div>
+      <div>I think that may sound a bit confusing still, so let me break it down.</div>
+      <div>&nbsp;</div>
+      <div>Right now, on your dev machine, you probably have some tools installed.&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Python, Node, Ruby, Java, maybe MongoDb&hellip; whatever the tools are required to run your code.</div>
+      <div>&nbsp;</div>
+      <div>When you run your code on your machine, it works, because you&rsquo;ve configured your environment.</div>
+      <div>&nbsp;</div>
+      <div>Containers work the same way.</div>
+      <div>&nbsp;</div>
+      <div>For production, we want to seal the box so it won&rsquo;t break open while being shipped, but, while it&rsquo;s in development, we can leave the box open.</div>
+      <div>&nbsp;</div>
+      <div>To do this, instead of using a Dockerfile to build a custom image, we will just use a generic environment, and place our code inside of it to run using a volume.</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-59" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">version: '3.4'
+      <div>&nbsp;</div>
+      <div>services:</div>
+      <div>&nbsp;</div>
+      <div>&nbsp; my-container:</div>
+      <div>&nbsp; &nbsp; image: node:10</div>
+      <div>&nbsp; &nbsp; volumes:</div>
+      <div>&nbsp; &nbsp; &nbsp; - .:/usr/src/svc</div>
+      <div>&nbsp; &nbsp; working_dir: /usr/src/svc</div>
+      <div>&nbsp; &nbsp; ports:</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;- 3000:3000</div>
+      <div>&nbsp; &nbsp; command: bash -c "npm i &amp;&amp; npm run dev"</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-44" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+      <div class="x_ce">Now, when we run `<strong>docker-compose up</strong>`, our current directory will be mounted into the `<strong>node:10</strong>` container. The command is then executed, which will install the npm dependencies, and then start the app in dev mode.
+      <div>&nbsp;</div>
+      <div>The `<strong>volumes</strong>` key in the config file above is where that magic happens. Your current directory '<strong>.</strong>' is mapped to /<strong>usr/src/svc</strong>&nbsp;in the node container. We then set the working dir to <strong>/usr/src/svc</strong> (which now has our code from .) so commands are executed in the container using the code from our local machines!</div>
+      <div>&nbsp;</div>
+      <div>We set that command to be "<strong>npm i &amp;&amp; npm run dev</strong>". More specifically, to use bash to call that command. In this case, we are installing the npm dependencies into the blank container, and just running it in dev mode.</div>
+      <div>&nbsp;</div>
+      <div>Changes in your local system are then synced with the volume in the container, causing any `watch` statements to trigger.</div>
+      <div>&nbsp;</div>
+      <div>And that&rsquo;s all there is to it!</div>
+      <div>&nbsp;</div>
+      <div>If you're astute, you may notice that we could actually break this task into multiple steps because our local file system keeps the state between the steps.</div>
+      <div>&nbsp;</div>
+      <div>Let's not worry about that for now though!</div>
+      <div>&nbsp;</div>
+      <div>We are far from done with our orchestration journey!</div>
+      </div>
+      </div>
+      <div id="x_text-44" class="x_editableElement" style="padding-top: 20px;">
+      <div class="x_ce">See You Tomorrow,</div>
+      </div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick &ldquo;knows something&rdquo; Scott</em></strong></div>
+      </div>
+
+
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

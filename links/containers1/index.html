@@ -1,0 +1,375 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+   
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/notes/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>     
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] Orchestrating Containers (Part 1 of 5)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            20 November 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    
+    <div class="x_mainEmailBody">
+      <table class="x_body" style="font-size: 14px; border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; height: 100%; width: 100%; color: #222222; font-family: 'Helvetica','Arial',sans-serif; font-weight: normal; line-height: 1.5; margin: 0; padding: 0;">
+      <tbody>
+      <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+      <td class="x_center" style="border-collapse: collapse!important; vertical-align: top; text-align: center; color: #222222; font-family: 'Helvetica','Arial',sans-serif; font-weight: normal; line-height: 1.5; font-size: 14px; margin: 0; padding: 0;" align="center" valign="top"><center style="width: 100%; min-width: 580px; clear: both;">
+      <table class="x_container x_eroot" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: inherit; width: 580px; padding: 0;">
+      <tbody>
+      <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+      <td style="border-collapse: collapse!important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica','Arial',sans-serif; font-weight: normal; line-height: 1.5; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top">
+      <table id="x_bg131" class="x_block-grid x_one-up" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; max-width: 580px; border: 0px solid #FFF;">
+      <tbody>
+      <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+      <td style="box-sizing: border-box; border-collapse: collapse!important; vertical-align: top; text-align: left; color: #222222; font-weight: normal; line-height: 1.5!important; font-size: 14px; margin: 0; padding: 20px; border: 0px solid #fff;" align="left" valign="top">
+      <div id="x_text-31" class="x_editableElement" style="font-size: 16px; display: block;">
+      <div class="x_ce">Today is an exciting day.
+      <div><br />
+      <div>&nbsp;</div>
+      <div>For today, we shall orchestrate!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>First, we will use one container.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Did you read <a id="x_link-1671-241" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL95ds5HxKIu7X6kBnJjAClZvEFOgpTzCJKtGLPDhLPsgefTPrNQu5nBJklRUv8c612ftdVEpA7hEhOIMznus-2BzQHBQIIAF6EmOASXu1IjMfRCc8vwI9YqmD0bGtov-2F8JF9tLn559dhRkwiPVX4nx5oo1jb5EqZSF0IR2W1NGOXvHDxpKRe2-2Br5DXU4sw8FCL5Pi21oVvjdxgV-2Bmdt2ptpPCgeLiCIFCet87BLk-2F6hJ3XJvZPLdUFUmZi45UR2qa9KGoiGL-2BNM2UxDZ8Ju0LdI3-2BXZwsFNH0FTWHnGALlEKBc6rc7PCn5LLGnOijgDBCN52sXwxnhd3XGsTw-2BTQZ0cOhnbzUmUpcVy4oPE4vyBFyQ-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dCtO3BKbkDwapJ19MBS1UZLgl90Jg-2FRMgOxQe2tWmPyv5a2CibsmDaOcsGYau-2FHp1hpPINA-2BSTAdpZyRZKXB7zqtOpAbxZwnJsmg7SB1cptQEHaoUCgzVI2AKvMQWqXYxeDj1dZN514tngdXRIY7tqVbm8BRs379sp7GU07BvQAk-2BbTOUqtywwzJzIOOdEE-2FQc-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">I have a confession to make&hellip; I commit to master. yet</a>?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>If you didn&rsquo;t yet - do that now!</div>
+      <div>&nbsp;</div>
+      <div>We will be using the Next.js application created as the result of this tutorial as an example:</div>
+      <div>&nbsp;</div>
+      <a id="x_link-6093-246" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL95ds5HxKIu7X6kBnJjAClZvEFOgpTzCJKtGLPDhLPsgefTPrNQu5nBJklRUv8c61JiJcwUW-2BgsoxUt3DXnhny07axOK-2Fs8Q21bIKeBCoSIg2Nm74gAS-2BaggDPEH7aOXfLoS3Jd-2FC-2BS-2BxEv0teNgRWIrufmI1AN2cYMha3mP6lKQoAROg2FbboeJUeoGWaKR6dI34eAq4aaWxEZiBn1TpB7z-2Fy49xiw6u-2BVWTmVSb-2FF8P-2FUKJIsyNt4-2BWuxykBBUBEIGgxuQcqZJisLwmqhpAjAAm3uqvK4zbHUbEV8m77uAmQOv8N7f4rc3-2BY-2BKTWsRyyRgDxoZvQWmHiKzoWDctNa-2F93J3wr2HCKMKn-2BqTibTd1YWGSJhAEtdedDCGOaoGYxEAyccvRkD-2BxS2rnOy7KCg-3D-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dCtO3BKbkDwapJ19MBS1UZLgl90Jg-2FRMgOxQe2tWmPyvzN5SIKjbeQonTXivvO6C5de-2FZmkr-2FfLyuHx16ytMvfXjd89f1m1XLbWLY3UsZKz46kX292wS4A44LpSCE87Ccts-2Fo-2BwmtrS-2BYQsKxH4YORhPGHmcULfSitka8o6QCIxxPw1yAc2AdBA2iksxf7CrXU-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">SSR Split Testing and Analytics with React, Redux, and Next.js</a>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>---</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Ok. Ready to proceed?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>In the above article, I went through the process of &ldquo;Dockerizing&rdquo; an application. I also showed how to do some more advanced things like running "integration tests". Don't worry about the more advanced stuff just yet.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>In the last email I asked you to do the same for an example application I provided which uses next.js.</div>
+      <div>&nbsp;(<a id="x_link-1354-373" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL95ds5HxKIu7X6kBnJjAClZvEFOgpTzCJKtGLPDhLPsjnV1xyLLu2m6XlJzmeJoUqlk1IAHUmUoBfu5lkUPSTx9tI-2BM4dgw3kN8sdQ4JPr2hCWXgQPcQkLBOyUKCpEAnuhrNNlpefU9F6d-2B1ZfwGSf-2BbmjZ2gac5DNduH3U98CgOUEN-2BUszXyIjsbjvutEEQvpC3oTzFnzvQM4zPHYEq3ofC-2BxrbAA8YIbpd1wsqZTowb06F6ljIzgtu2pPxW4Qy1LiRW1yRPCrgVHlcXjJrBcUp-2BC3MD-2BSSCMiBJsRdLbq57N8IEFkEdVRQHNR9bp4Wd_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dCtO3BKbkDwapJ19MBS1UZLgl90Jg-2FRMgOxQe2tWmPyvy-2Bwm3iaM-2FCMr7Nxuf-2BI0sq65izJO3UdhbgdD4ntwQQF8C9Cg0hYzagS-2BNxOz5Kz8yMV50-2BmT25yBViVC4oPLKwATNL6Qb6xGiZY9vp3RIykJEFRyZwTDOvaRYmoaPyh5iyqjpN5NVKcZHxAm3nwtFc-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://github.com/patrickleet/split-test-tutorial</a>)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>As I said, it&rsquo;s pretty similar to the one I provided in the article.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s the Dockerfile required (also on Github here:&nbsp;</div>
+      <div><a id="x_link-1647-43" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL95ds5HxKIu7X6kBnJjAClZvEFOgpTzCJKtGLPDhLPsjnV1xyLLu2m6XlJzmeJoUqlk1IAHUmUoBfu5lkUPSTx9tI-2BM4dgw3kN8sdQ4JPr2h6KhMd1-2Boa9gIKsv8aCyW7cpI4XPKHXdMyWKS4D0BtZw670Y5m4O16CBoVcnKcPwmOwq4GwiDN8sImxYbq2WEPKWuan3fAxox33WI0CWdAgF3yRhZ7Ku-2Bpm8Z2N183HXTPnx1AMBrf1QCm62tK9IRvXiNtnGlCrNPSkV3AYF1IPW11h3qunuUNxfbzRrlVKIpqnfArw7nORQZ6ueuLlnaSx1SuhfMw5t24aOai-2FaYht6QE9Yk6DA0tRjgr2f6GVdQ-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dCtO3BKbkDwapJ19MBS1UZLgl90Jg-2FRMgOxQe2tWmPyv4f5fS3NJqtxa2CFVewwgp27BEOwIh-2Buf2VxcfpEwoeBwkUl00yAxSffLEAwixijEvYvFXtXp9ZZ-2FeEj8QouYYvSlFWiOd3lyw7GJs-2FzOcOLJAtMTozvtyCmMVgVvumCOQB7ASm8JA2KEcRGKfk8Px0-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://github.com/patrickleet/split-test-tutorial/blob/Dockerfile/Dockerfile</a>)</div>
+      </div>
+      </div>
+      </div>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      <div class="x_rowPtop">&nbsp;</div>
+      <table id="x_bg17" class="x_block-grid x_one-up" style="border-spacing: 0px; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; max-width: 580px; border: 0px solid #ffffff; background-color: #ffffff;">
+      <tbody>
+      <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+      <td style="box-sizing: border-box; border-collapse: collapse!important; vertical-align: top; text-align: left; color: #222222; font-weight: normal; line-height: 1.5!important; font-size: 14px; margin: 0; padding: 20px; border: 0px solid #fff;" align="left" valign="top">
+      <div id="x_text-39" class="x_editableElement x_mfs_20" style="padding-top: 5px; font-size: 12px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont; display: block; color: #000000;">
+      <div class="x_ce">FROM node:10-alpine AS build<br /> <br />
+      <div>&nbsp;</div>
+      <div># install gyp tools</div>
+      <div># if you have an npm dependency that depends on native code</div>
+      <div># like the redis package, you'll need these tools to compile</div>
+      <div># that dependency</div>
+      <div>RUN apk add --update --no-cache \</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; python \</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; make \</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; g++<br /> </div>
+      <div>&nbsp;</div>
+      <div>ADD . /src</div>
+      <div>WORKDIR /src<br /> </div>
+      <div>RUN npm install</div>
+      <div><strong># RUN npm run lint</strong></div>
+      <div><strong># RUN npm run test</strong></div>
+      <div>RUN npm run build</div>
+      <div>RUN npm prune --production<br /> <br /> </div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>FROM node:10-alpine<br /> </div>
+      <div>&nbsp;</div>
+      <div>RUN apk add --update --no-cache curl<br /> </div>
+      <div>&nbsp;</div>
+      <div>ENV PORT=3000</div>
+      <div>EXPOSE $PORT<br /> </div>
+      <div>&nbsp;</div>
+      <div>ENV DIR=/usr/src/service</div>
+      <div>WORKDIR $DIR<br /> </div>
+      <div>&nbsp;</div>
+      <div>COPY --from=build /src/package.json package.json</div>
+      <div>COPY --from=build /src/package-lock.json package-lock.json</div>
+      <div>COPY --from=build /src/node_modules node_modules</div>
+      <div><strong>COPY --from=build /src/.next .next<br /> </strong></div>
+      <div>&nbsp;</div>
+      <div>HEALTHCHECK --interval=5s \</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; --timeout=5s \</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; --retries=6 \</div>
+      <div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CMD curl -fs http://localhost:$PORT/_health || exit 1<br /> </div>
+      <div>&nbsp;</div>
+      <div><strong>CMD ["npm", "run", "start"]</strong></div>
+      </div>
+      </div>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      <div class="x_rowPtop">&nbsp;</div>
+      <table id="x_bg39" class="x_block-grid x_one-up" style="border-spacing: 0px; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; max-width: 580px; border: 1px solid #b8b8b8; background-color: #ffffff;">
+      <tbody>
+      <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+      <td style="word-break: break-word; vertical-align: top; text-align: left; color: #222222; font-weight: normal; font-size: 14px; margin: 0px; padding: 40px; border: 0px solid #ffffff; border-collapse: collapse!important; line-height: 1.5!important;" align="left" valign="top">
+      <div id="x_text-19" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>All I did was comment out the &ldquo;lint&rdquo; and &ldquo;test&rdquo; commands, as we have not configured linting or testing, yet.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Next, I changed <strong>/dist</strong> to <strong>/.next</strong> as that&rsquo;s where next&rsquo;s build output is, and updated the command to &ldquo;npm run start&rdquo;.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>THAT&rsquo;S IT!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>That wasn't so bad, was it?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>One of the most powerful things you can do as an engineer, is have templates that you can look up and use whenever you come across the same problem again.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>If you have Node.js app&rsquo;s or service&rsquo;s, the Dockerfile above will generally only need small modifications.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>I recommend heading over to <a id="x_link-482-53" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL95ds5HxKIu7X6kBnJjAClZvEFOgpTzCJKtGLPDhLPshBW8iQtU0-2F-2F4bHM8E26yNPtpE-2B-2FZD73JpyR-2BI6XAD5HN-2F1JMWwdeR4PdlhB2ZZeZjUksE3MTiOnzmhKO3TxAQzedhYZtg9kcEJIl8eyt1nMCc16a9lAQ9Fuc1pJ5HDp8eg9IRaVu9jyZ1NFUFuYyMNY91o1VWWstdDAR5T1CB9h8UJEgzILAU78RZJhpYflN2vv2I7g9oBy2Hs-2BGhyqxY8J1dC8P-2BNY7eDTLVxn-2FaVPoMg9C5GnldXALepkr7lhNs-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dCtO3BKbkDwapJ19MBS1UZLgl90Jg-2FRMgOxQe2tWmPyv04t2QzGmU5rzzLoNFnCBV8V-2B9yHv65ij-2Bk2e94QfLUxnButECkjxA8z4XG4jRbFSR0N0H76pI1bT0nQhwNiYNscl-2FgKKs69n4jGH-2BzUArrv20yOy5JQlRuCGkgptfSOOqZYLRJ8MHOsr8WXiNnrX7U-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">gist.github.com</a> and saving yourself a copy of this &ldquo;Multi-stage Node.js build&rdquo;. This build will work on pretty much any Node.js project with a few small tweaks.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Ready to run it!?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>First, build the container.</div>
+      <div><strong><br /> </strong></div>
+      <div><strong>docker build -t my-container .</strong></div>
+      <div>&nbsp;</div>
+      <div>As a result, you will have a brand new, (almost) production-ready image of a container! (I can't call it production ready without tests!)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Try it out, and give it a run with</div>
+      <div><strong><br /> </strong></div>
+      <div><strong>docker run -p 3000:3000 my-container</strong></div>
+      <div><strong><br /> </strong></div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s the output from my terminal:</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-6" class="x_editableElement x_mfs_20" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      ➜ docker run -p 3000:3000 my-container
+      <div>&gt; split-test-tutorial@1.0.0 start /usr/src/service</div>
+      <div>&gt; next start</div>
+      <div>&gt; Ready on http://localhost:3000</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-46" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+      <div class="x_ce">And in my browser...</div>
+      </div>
+      <div id="x_image-31" class="x_editableElement"><img style="max-width: 500px; width: 100%; display: inline-block;" src="./ei.png" alt="" data-imagetype="External" data-connectorsauthtoken="1" data-imageproxyendpoint="/actions/ei" data-imageproxyid="" /></div>
+      <div id="x_text-20" class="x_editableElement x_mfs_20">
+      <div class="x_ce">This container will run the same on ANY machine - whether that&rsquo;s a server, your laptop, or my laptop. Containers are kinda like virtual machines but they much more efficiently use resources because they are able to share some resources at a deep, internal level while still being isolated.
+      <div><br />
+      <div>&nbsp;</div>
+      <div>When we now work with the container we've just built, we are no longer dealing with a Node.js app,<strong> instead, we are dealing with a container. </strong>That means, we can use container orchestration tools to deploy and run our application.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>(Like the cranes can lift containers carrying any cargo.)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div><strong>The first &ldquo;crane&rdquo; I want to introduce you to is called &ldquo;docker-compose&rdquo;</strong></div>
+      <div>&nbsp;</div>
+      <div><strong><br /> </strong></div>
+      <div><strong>Docker Compose is a local orchestration tool.</strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>It&rsquo;s most useful for orchestrating containers running on a single machine, like your laptop.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>In my article, I showed how to use it for orchestrating staging tests.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>If that seemed a bit complicated still, don't worry - you&rsquo;ll get there.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>For today, let&rsquo;s start with orchestrating a single container as it is the most basic example of orchestrating a container.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>In your project, add a new file <strong>docker-compose.yml</strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Remember how I talked about codified configurations?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Codified configurations are great because they reduce the number of command line utilities and flags you need to memorize, ensure that the containers always run in the same way, with the same settings, and make it easy to share with other team members.</div>
+      <div>&nbsp;</div>
+      <div>They are easily reproducible, because, well, that's what code does!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>This is a codified configuration for running the container you built: (<a id="x_link-8756-384" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkL95ds5HxKIu7X6kBnJjAClZvEFOgpTzCJKtGLPDhLPsjnV1xyLLu2m6XlJzmeJoUqlk1IAHUmUoBfu5lkUPSTx9tI-2BM4dgw3kN8sdQ4JPr2h6KhMd1-2Boa9gIKsv8aCyW7N5EWib3zNcncpd4up1q420xuVDypzDrXuBtgw2XBaZGQcXwpoJD-2FPJkmtvjNQSlNoVpCc3Be1bwGHeI7Rpxr3WzEHEZ-2B2abV8F70L5fFhfLdttakhVGDzdNCQeB6Wn-2F0J5rlh8-2B11YHd6Awel0tG4PFWbXRbeXaiXBC6MCW11a-2Bpn19dM7cNroO2aiBYn-2B9VHoNfBjMJC8SRxdci5L47KSOpWEo4jeIjLW7cgiVdVJfL6GRhbl6c15owGsbqtrl-2FZS0SeFGCstNcyS9HR-2BdJqA-3D-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dCtO3BKbkDwapJ19MBS1UZLgl90Jg-2FRMgOxQe2tWmPyv-2F0N2oqppsdSIGZ5c3QExMkDw7z-2FKr91zOfnYFfmiC5WUk0BeUXkfFNopPm8tnw4hGf7TXNj6aA49zGUXpf6D4vcjBIZZhw4vmntaRe4PL9XFC604hxT9u1-2FCQxk4r2KpaZ5UGGHl6M1L5II7sjVGTM-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">on Github</a>)</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-21" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="color: #000000; display: block; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">version: '3.4'
+      <div>&nbsp;</div>
+      <div>services:</div>
+      <div>&nbsp;</div>
+      <div>&nbsp; my-container:</div>
+      <div>&nbsp; &nbsp; image: my-container</div>
+      <div>&nbsp; &nbsp; ports:</div>
+      <div>&nbsp; &nbsp; &nbsp; - 3000:3000</div>
+      </div>
+      </div>
+      <div id="x_text-25" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 10px;">
+      <div class="x_ce">Let's run the same container now using<strong> docker-compose</strong> instead of <strong>docker</strong>.<br /> <br /> If your other container is still running, press CTRL+C to stop it.
+      <div><br />
+      <div>&nbsp;</div>
+      <div>Then, running <strong>docker-compose up</strong>&nbsp;should yield the same results as before!</div>
+      </div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-53" class="x_editableElement x_mfs_20" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">➜ split-test-tutorial git:(Dockerfile) ✗ docker-compose up
+      <div>Creating network "splittesttutorial_default" with the default driver</div>
+      <div>Creating splittesttutorial_my-container_1 ... done</div>
+      <div>Attaching to splittesttutorial_my-container_1</div>
+      <div>my-container_1 |</div>
+      <div>my-container_1 | &gt; split-test-tutorial@1.0.0 start /usr/src/service</div>
+      <div>my-container_1 | &gt; next start</div>
+      <div>my-container_1 |</div>
+      <div>my-container_1 | &gt; Ready on http://localhost:3000</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-44" class="x_editableElement" style="padding-top: 20px; color: #222222;">
+      <div class="x_ce">
+      <div>Pretty neat, right?</div>
+      <div>&nbsp;</div>
+      <div>As you saw a glimpse of in my article, this stuff is the base of some really powerful techniques that can save you A TON of time. It can also greatly improve your testing, code quality, and deployment processes!</div>
+      <div>&nbsp;</div>
+      <div>And of course, you&rsquo;re probably wondering &ldquo;What about running it in production? Can I use docker-compose for that, too?&rdquo;</div>
+      <div>&nbsp;</div>
+      <div>Woahhh slow down there, tiger! Is this even the best way to run our apps locally?... or is there a better way?</div>
+      <div>&nbsp;</div>
+      <div>Hint... There's a better way - sometimes.</div>
+      <div>&nbsp;</div>
+      <div>More soon...</div>
+      <div>&nbsp;</div>
+      Until next time!,</div>
+      </div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 15px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick "The Orchestrator" Scott</em></strong></div>
+      </div>
+      <div id="x_text-56888" class="x_editableElement" style="padding-top: 20px; display: block;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      <table id="" class="x_block-grid x_one-up" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; max-width: 580px; border: 0px solid #FFF;">
+      <tbody>
+      <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+      <td style="border-collapse: collapse!important; vertical-align: top; text-align: left; color: #222222; font-weight: normal; line-height: 1.5!important; font-size: 14px; margin: 0; padding: 20px; border: 0px solid #fff;" align="left" valign="top">&nbsp;</td>
+      </tr>
+      </tbody>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      </center></td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+      
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

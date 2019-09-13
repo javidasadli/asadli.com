@@ -1,0 +1,174 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>My Notes</title>
+    
+    <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] Orchestrating Containers (Part 3 of 5)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            26 November 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    <div id="x_text-31" class="x_editableElement" style="font-size: 16px;">
+      <div class="x_ce">
+      <div>Hello, hello.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Welcome back :)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Today&rsquo;s lesson is short, but powerful.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>You&rsquo;re going to learn about how to run dependencies, like databases, and how to access them from your application.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Different orchestrators may handle this part differently. Don&rsquo;t worry about that for now.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Let&rsquo;s continue to focus on local development with our local orchestrator.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Say you wanted to run mongodb as part of your application&rsquo;s &ldquo;stack&rdquo;.</div>
+      <div>&nbsp;</div>
+      <div>To do so, all you need to do is find the image name in Docker Hub, and create new entry in the `<strong>services</strong>` section of the `<strong>docker-compose.yml</strong>` file.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s a full example of what that looks like, with our service running in development mode:</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-84" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">version: '3.4'<br /> <br /> <strong>networks</strong>:<br /> &nbsp; <strong>mongo</strong>:<br /> <br />
+      <div>services:</div>
+      <div>&nbsp; my-container:</div>
+      <div>&nbsp; &nbsp; image: node:10</div>
+      <div>&nbsp; &nbsp; volumes:</div>
+      <div>&nbsp; &nbsp; &nbsp; - .:/usr/src/svc</div>
+      <div>&nbsp; &nbsp; working_dir: /usr/src/svc</div>
+      <div>&nbsp; &nbsp; ports:</div>
+      <div>&nbsp; &nbsp; &nbsp; - 3000:3000</div>
+      <div>&nbsp; &nbsp; command: bash -c "npm i &amp;&amp; npm run dev"</div>
+      <div>&nbsp; &nbsp; environment:</div>
+      <div>&nbsp; &nbsp; &nbsp; - MONGO_URL=mongodb://<strong>mymongodb</strong>:27017/inventory</div>
+      <div>&nbsp; &nbsp; <strong>networks:</strong></div>
+      <div><strong>&nbsp; &nbsp; &nbsp; - mongo</strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp; <strong>mymongodb</strong>:</div>
+      <div>&nbsp; &nbsp; image: mongo</div>
+      <div>&nbsp; &nbsp; <strong>networks:</strong></div>
+      <div><strong>&nbsp; &nbsp; &nbsp; - mongo</strong></div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-84" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now">
+      <div class="x_ce">To enable communication between the two services, they need to be on the same network.
+      <div>&nbsp;</div>
+      <div>By adding the key `networks` to each services config, we can specify that they are on the same network, and thus, can communicate with each other.</div>
+      <div>&nbsp;</div>
+      <div>In docker-compose, when you run a `stack` file, a default network is created. It's better to be explicit though, so I've also defined a network named "mongo" without changing any of it's default configuration.</div>
+      <div>&nbsp;</div>
+      <div>Lastly, we added an environment variables section to <strong>my-container'</strong>s definition as well. In it, we passed in the name of the mongodb service as it is defined below. Note that both are `<strong>mymongodb</strong>`</div>
+      <div>&nbsp;</div>
+      <div>Most orchestrator&rsquo;s have an internal DNS service that allows this to happen. When you ping `http://mymongodb`, Docker will look up where the service `mymongodb` is running, and resolve to that address if it is on the network.</div>
+      <div>&nbsp;</div>
+      <div>This is known as &ldquo;Service Discovery&rdquo;.</div>
+      <div>&nbsp;</div>
+      <div>Service Discovery used to be difficult.&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>You used to need to run a distributed key value store called consul and keep track of where each container was scheduled. Fortunately, those days are past.</div>
+      <div>&nbsp;</div>
+      <div>Now... you just make sure the containers are on the same network, and then you can access them by name. It almost feels too easy, and some people feel like they are missing something.</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-44" class="x_editableElement x_de-editing-element x_de-editing-now" style="padding-top: 20px;">
+      <div class="x_ce">
+      <div>10 lines in total added to our config to run an entire database on a secure private network. Not bad, right?</div>
+      <div>&nbsp;</div>
+      <div><strong>Docker Swarm, the clustered version of Docker for production workloads, works in the same exact way.</strong></div>
+      <div>&nbsp;</div>
+      <div><strong>Meaning it&rsquo;s just as easy to run that same database in production.</strong></div>
+      <div><strong><br /> </strong></div>
+      <div>Unfortunately, in it&rsquo;s current state, if you do that, you WILL lose all the data.</div>
+      <div>&nbsp;</div>
+      <div>Even locally as it is, every time you run your app you&rsquo;d be starting with a blank database, which can be convenient when you want it, but starting each day with a db import isn&rsquo;t really a great use of time.</div>
+      <div>&nbsp;</div>
+      <div>There is however, a very easy fix for this.</div>
+      <div>&nbsp;</div>
+      We&rsquo;ll talk about it soon!
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick "the Data Persister" Scott</em></strong></div>
+      </div>
+
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>

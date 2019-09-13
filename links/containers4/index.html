@@ -1,0 +1,209 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114450519-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-114450519-3');
+    </script>
+
+    <title>About My Website</title>
+        <style>
+    * {
+      font-size: 1rem;
+      font-family: sans-serif;
+    }
+    pre {
+      background-color: #ddd;
+      padding: 1em;
+      overflow-y: auto;
+    }
+    p, li { line-height: 1.5em; }
+    </style>
+  </head>      
+  <body>
+    <div style="margin: 0 auto; max-width: 45em;">
+      <nav>
+        <a href="/">Home</a> |
+        <a href="/blog">Blog</a> |
+        <a href="/links/">Notes</a> |
+        <a href="/watch/">Video</a> |
+        <a href="/contact/">Contact</a>
+      </nav>
+      <hr />
+          
+      <article>
+  <header>
+    <h1 style="color:firebrick; border-bottom: 1px solid; padding: 5px 0;">
+      [GDD] Orchestrating Containers (Part 4 of 5)
+
+      
+        <small style="display: block; text-align: right; color: black; font-weight: normal;">
+          
+
+          
+
+          
+            27 November 2018
+          
+        </small>
+      
+
+    </h1>
+  </header>
+
+  <div>
+    <div id="x_text-31" class="x_editableElement" style="font-size: 16px;">
+      <div class="x_ce">
+      <div>Two more pro tips for development orchestration, and then, we&rsquo;ll be on to running our application in production!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>First, remember how I mentioned that if we ran mongo as it is, we&rsquo;d lose all of our data?</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Well, the fix, is to use a volume.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>A volume is like a directory on your computer that&rsquo;s backed up to the internet.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Say your &ldquo;Music&rdquo; folder, was really important. You could create a &ldquo;<strong>PersistentVolume</strong>&rdquo;, and sync your Music folder with it.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Same thing for a database. Most of them store their data in a certain directory, so, you&rsquo;ll just have to sort through some documentation and figure out where it is.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>For mongo, that place is `<strong>/data/db</strong>`. I found it on the docker hub page for the project. <a id="x_link-208-489" class="" style="text-decoration: underline;" href="http://url5112.cloudnative.institute/wf/click?upn=4Sygo-2FhtoXHKofCMapr-2B0naRXF15Tzb3ssQF5gj6v-2FIL0FesM3rYxqNqDlA6XzkLyhJTBfOd8ysUv6UXaJR4gdZPvzB3gj6QF5bjZoqhM2wWUOJcIxxN4WEEMCpw5-2FDa6uUssIDVa2C1f3oPWkMacyTmQpweA8olmhjWpCbyiibCVWxoUiSXvHMo-2FOp9c3s-2BgUI1BuxQsC7ob6A1kQUliscEGV1ofAPiGknxubaCD8ifZUGyOLt2wzyWDdQtkzKORzJ1sIfwzMtBO5jiG7VhquNESmFwQNo2gESBm4ARYDlGAkf2IOoLhdvT95N9oVx8MM8gThDXNyi2p30hYTYYChuAxVf8-2F1Xuu1jjCeEi0cs-3D_Sfz4jTq6iPdK8tCQJQNbOMz2EFd1jXUpOlaUJAcS8dAy91fFP6iybmsA8cEV1p6bnRAgiIQLHWW-2FUK1Y5JGc-2FIZSz59Hb0XiqcGIDFJgNGTFX72ShHvgF6lw4P6l-2FiKrt-2Btkh00keYg4ewZVsK6Z5K8q5MfI3ta-2BgD-2FPU0sc9MjozH147jxCiCcJDo0BvAa-2BbVy-2BSebRRWEeCjqj0VZL4tnWhYzZq5XB18VpW-2FZmJo8-3D" target="_blank" rel="noopener noreferrer" data-auth="NotApplicable">https://hub.docker.com/_/mongo/</a></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Declaring persistent volumes varies a bit per orchestrator, but the same principles apply.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>For our development orchestrator, docker-compose, we can declare a volume by adding a new section to our config named `volumes`.</div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      <div id="x_text-53" class="x_editableElement x_mfs_20" style="font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont; padding-top: 15px;">
+      <div class="x_ce">volumes:
+      <div>&nbsp; mongo:</div>
+      </div>
+      </div>
+      <div id="x_text-14" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">
+      <div>&nbsp;</div>
+      This will create a new persistent volume named &ldquo;mongo&rdquo;.
+      <div>&nbsp;</div>
+      <div>It&rsquo;s possible to specify more options after the colon, but this will create a volume using the default settings. Those are fine for now.</div>
+      <div>&nbsp;</div>
+      <div>Next, we just need to reference our new volume by name.</div>
+      <div>&nbsp;</div>
+      <div>Here&rsquo;s what our new config looks like:</div>
+      </div>
+      </div>
+      <div id="x_text-69" class="x_editableElement x_mfs_20" style="padding-top: 15px; font-family: 'Lucida Console', Monaco, monospace, serif, EmojiFont;">
+      <div class="x_ce">version: '3.4'
+      <div>&nbsp;</div>
+      <div>networks:</div>
+      <div>&nbsp; mongo:<br />
+      <div><br />
+      <div>services:</div>
+      <div>&nbsp; my-container:</div>
+      <div>&nbsp; &nbsp; image: node:10</div>
+      <div>&nbsp; &nbsp; volumes:</div>
+      <div>&nbsp; &nbsp; &nbsp; - .:/usr/src/svc</div>
+      <div>&nbsp; &nbsp; working_dir: /usr/src/svc</div>
+      <div>&nbsp; &nbsp; ports:</div>
+      <div>&nbsp; &nbsp; &nbsp; - 3000:3000</div>
+      <div>&nbsp; &nbsp; command: bash -c "npm i &amp;&amp; npm run dev"</div>
+      <div>&nbsp; &nbsp; environment:</div>
+      <div>&nbsp; &nbsp; &nbsp; - MONGO_URL=mongodb://mymongodb:27017/inventory</div>
+      <div>&nbsp; &nbsp; networks:</div>
+      <div>&nbsp; &nbsp; &nbsp; - mongo<br /> </div>
+      <div>&nbsp; mymongodb:</div>
+      <div>&nbsp; &nbsp; image: mongo</div>
+      <div>&nbsp; &nbsp; networks:</div>
+      <div>&nbsp; &nbsp; &nbsp; - mongo</div>
+      <div>&nbsp; &nbsp; <strong>volumes:</strong></div>
+      <div><strong>&nbsp; &nbsp; &nbsp; - mongo:/data/db</strong></div>
+      <div>&nbsp;</div>
+      <div><strong>volumes:</strong></div>
+      <div>&nbsp;</div>
+      <div><strong>&nbsp; mongo:</strong></div>
+      <div>&nbsp;</div>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div id="x_text-18" class="x_editableElement x_mfs_20 x_de-editing-element x_de-editing-now" style="padding-top: 15px;">
+      <div class="x_ce">Earlier we mapped the current directory `<strong>.</strong>` to `<strong>/usr/src/service</strong>` in `<strong>my-container</strong>`.
+      <div>&nbsp;</div>
+      <div>This allowed us to synchronize the code from our repository with a directory inside of the container. If we update our code, `<strong>/usr/src/service</strong>` will reflect that, and if `<strong>/usr/src/service</strong>` is modified by the container, it will be reflected in our current directory.</div>
+      <div><br />
+      <div>&nbsp;</div>
+      <div>This time, in `<strong>mymongodb</strong>` we synchronized `<strong>/data/db</strong>` inside of the container, with a persistent volume named `<strong>mongo</strong>`.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>As mongodb persists it&rsquo;s data, it&rsquo;s saved to `<strong>/data/db</strong>` which is synchronized with `<strong>mongo</strong>`.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Now, if we restart our container, we won&rsquo;t lose any data!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div><strong>The magic is when you create your persistent volumes in the cloud.&nbsp;</strong></div>
+      <div>&nbsp;</div>
+      <div><strong>Each cloud provider handles provisioning volumes with their specific technology. </strong>In AWS, your orchestrator will provision the appropriate AWS resources, such as EBS or EFS drives.</div>
+      <div>&nbsp;</div>
+      <div><strong>The provider implements the interfaces of the orchestrator.</strong></div>
+      <div><strong><br /> </strong></div>
+      <div><strong>The people with AWS certifications deal with those details. </strong>Or the people who make AWS, and they're pretty good at it too. ;)</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>This is super important, and powerful, so I want you to get this part:</div>
+      <div>&nbsp;</div>
+      <div><em><strong>This allows you to work with volumes in a uniform manner, and that configuration is easily moved between different clouds.</strong></em></div>
+      <div>&nbsp;</div>
+      <div><strong>Bye bye, vendor lock-in!</strong></div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>And, you know, your data doesn&rsquo;t get deleted! Always a plus.</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>There you have it. That&rsquo;s one of the two tips but that's all for today!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Tune in tomorrow for my next development orchestration tip!</div>
+      <div>&nbsp;</div>
+      <div>&nbsp;</div>
+      <div>Then&hellip; how&rsquo;d you like it if I showed you how to orchestrate your containers in production?</div>
+      </div>
+      <div>&nbsp;</div>
+      <div>See you soon.</div>
+      </div>
+      </div>
+      <div id="x_text-24826" class="x_editableElement" style="padding-top: 10px; font-size: 18px; font-family: Georgia, serif, serif, EmojiFont;">
+      <div class="x_ce"><strong><em>Patrick &ldquo;Pro tips&rdquo; Scott</em></strong></div>
+      </div>
+
+
+    <hr />
+    
+
+
+  </div>
+</article>
+
+
+      <hr />
+      <footer>
+        <p>&copy; Javid Asadli 2018</p>
+      </footer>
+    </div>
+  </body>
+</html>
